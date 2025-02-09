@@ -45,7 +45,7 @@ export class ArariaClient {
   private client: AxiosInstance;
 
   constructor(config: ArariaClientConfig) {
-    const baseURL = config.baseUrl || "http://localhost:3000";
+    const baseURL = config.baseUrl || "https://prod-api.araria.com.br";
 
     this.client = axios.create({
       baseURL: baseURL.replace(/\/$/, ""),

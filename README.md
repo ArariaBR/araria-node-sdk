@@ -18,7 +18,7 @@ import { ArariaClient } from "araria-sdk";
 // Initialize the client
 const client = new ArariaClient({
   apiKey: "your-api-key",
-  baseUrl: "http://your-api-url", // Optional, defaults to http://localhost:3000
+  baseUrl: "https://prod-api.araria.com.br", // Optional, defaults to http://localhost:3000
 });
 
 // Generate images with Runware
