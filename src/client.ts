@@ -95,6 +95,7 @@ const VisionImageToTextRequestSchema = z.object({
 const PromptGenerateRequestSchema = z.object({
   systemPrompt: z.string(),
   description: z.string(),
+  model: z.string(),
 });
 
 const VisionImageToTextResponseSchema = z.string();
