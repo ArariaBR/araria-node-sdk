@@ -3,8 +3,27 @@ import { z } from "zod";
 
 // Request schemas
 const RunwareRequestSchema = z.object({
-  prompt: z.string(),
-  negative_prompt: z.string().optional(),
+  positivePrompt: z.string(),
+  model: z.string(),
+  scheduler: z.string().optional(),
+  negativePrompt: z.string().optional(),
+  seed: z.number().optional(),
+  steps: z.number().optional(),
+  checkNSFW: z.boolean().optional(),
+  seedImage: z.string().optional(),
+  maskImage: z.string().optional(),
+  strength: z.number().optional(),
+  height: z.number().optional(),
+  width: z.number().optional(),
+  CFGScale: z.number().optional(),
+  clipSkip: z.number().optional(),
+  usePromptWeighting: z.boolean().optional(),
+  promptWeighting: z.string().optional(),
+  numberResults: z.number().optional(),
+  outputType: z.string().optional(),
+  outputFormat: z.string().optional(),
+  includeCost: z.boolean().optional(),
+  customTaskUUID: z.string().optional(),
 });
 
 const UpscaleRequestSchema = z.object({
@@ -101,6 +120,27 @@ const PromptGenerateRequestSchema = z.object({
 const VisionImageToTextResponseSchema = z.string();
 const PromptGenerateResponseSchema = z.string();
 
+const FashionTryonRequestSchema = z.object({
+  model: z.string(),
+  task_type: z.string(),
+  input: z.object({
+    model_input: z.string(),
+    dress_input: z.string().optional(),
+    upper_input: z.string().optional(),
+    lower_input: z.string().optional(),
+  }),
+});
+
+const FashionModelRequestSchema = z.object({
+  name: z.string(),
+  description: z.string().optional(),
+  age: z.string(),
+  gender: z.string(),
+  bodyType: z.string(),
+  ethnicity: z.string(),
+  style: z.string(),
+});
+
 // Types
 export type RunwareRequest = z.infer<typeof RunwareRequestSchema>;
 export type UpscaleRequest = z.infer<typeof UpscaleRequestSchema>;
@@ -132,6 +172,8 @@ export interface ArariaClientConfig {
   baseUrl?: string;
 }
 
+export type FashionTryonRequest = z.infer<typeof FashionTryonRequestSchema>;
+export type FashionModelRequest = z.infer<typeof FashionModelRequestSchema>;
 export class ArariaClient {
   private client: AxiosInstance;
 
@@ -336,6 +378,27 @@ export class ArariaClient {
    */
   async finalizeFashionVideo(fashionVideoId: string) {
     return this.makeRequest("POST", `fashion-video/finalize/${fashionVideoId}`);
+  }
+
+  /**
+   * Create a new fashion tryon
+   */
+  async createFashionTryon(request: FashionTryonRequest) {
+    return this.makeRequest("POST", "fashion-tryon", request);
+  }
+
+  /**
+   * Create a new fashion model
+   */
+  async createFashionModel(request: FashionModelRequest) {
+    return this.makeRequest("POST", "fashion-model", request);
+  }
+
+  /**
+   * Get all fashion models
+   */
+  async getFashionModels() {
+    return this.makeRequest("GET", "fashion-model");
   }
 
   /**
