@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import { z } from "zod";
 
 // Request schemas
-const RunwareRequestSchema = z.object({
+const ImageGenerateRequestSchema = z.object({
   positivePrompt: z.string(),
   model: z.string(),
   scheduler: z.string().optional(),
@@ -34,11 +34,11 @@ const BackgroundRemovalRequestSchema = z.object({
   image_url: z.string(),
 });
 
-const Decor8PrimeWallsRequestSchema = z.object({
+const DecorPrimeWallsRequestSchema = z.object({
   prompt: z.string(),
 });
 
-const Decor8ImageRequestSchema = z.object({
+const DecorImageRequestSchema = z.object({
   prompt: z.string(),
 });
 
@@ -142,15 +142,15 @@ const FashionModelRequestSchema = z.object({
 });
 
 // Types
-export type RunwareRequest = z.infer<typeof RunwareRequestSchema>;
+export type ImageGenerateRequest = z.infer<typeof ImageGenerateRequestSchema>;
 export type UpscaleRequest = z.infer<typeof UpscaleRequestSchema>;
 export type BackgroundRemovalRequest = z.infer<
   typeof BackgroundRemovalRequestSchema
 >;
-export type Decor8PrimeWallsRequest = z.infer<
-  typeof Decor8PrimeWallsRequestSchema
+export type DecorPrimeWallsRequest = z.infer<
+  typeof DecorPrimeWallsRequestSchema
 >;
-export type Decor8ImageRequest = z.infer<typeof Decor8ImageRequestSchema>;
+export type DecorImageRequest = z.infer<typeof DecorImageRequestSchema>;
 export type ChatRequest = z.infer<typeof ChatRequestSchema>;
 export type FashionVideoRequest = z.infer<typeof FashionVideoRequestSchema>;
 export type NuvemshopUserDto = z.infer<typeof NuvemshopUserDtoSchema>;
@@ -203,15 +203,15 @@ export class ArariaClient {
   }
 
   /**
-   * Generate images using Runware
+   * Generate image
    */
-  async generateRunware(request: RunwareRequest) {
-    const validatedData = RunwareRequestSchema.parse(request);
+  async imgGenerate(request: ImageGenerateRequest) {
+    const validatedData = ImageGenerateRequestSchema.parse(request);
     return this.makeRequest("POST", "img/generate", validatedData);
   }
 
   /**
-   * Upscale an image using Runware
+   * Upscale an image
    */
   async upscaleImage(request: UpscaleRequest) {
     const validatedData = UpscaleRequestSchema.parse(request);
@@ -219,7 +219,7 @@ export class ArariaClient {
   }
 
   /**
-   * Remove background from an image using Runware
+   * Remove background from an image
    */
   async removeBackground(request: BackgroundRemovalRequest) {
     const validatedData = BackgroundRemovalRequestSchema.parse(request);
@@ -227,18 +227,18 @@ export class ArariaClient {
   }
 
   /**
-   * Generate prime walls using Decor8
+   * Generate prime walls
    */
-  async generateDecor8PrimeWalls(request: Decor8PrimeWallsRequest) {
-    const validatedData = Decor8PrimeWallsRequestSchema.parse(request);
+  async generateDecorPrimeWalls(request: DecorPrimeWallsRequest) {
+    const validatedData = DecorPrimeWallsRequestSchema.parse(request);
     return this.makeRequest("POST", "img/prime-walls", validatedData);
   }
 
   /**
-   * Generate interior decoration images using Decor8
+   * Generate interior decoration images
    */
-  async generateDecor8Image(request: Decor8ImageRequest) {
-    const validatedData = Decor8ImageRequestSchema.parse(request);
+  async generateDecorImage(request: DecorImageRequest) {
+    const validatedData = DecorImageRequestSchema.parse(request);
     return this.makeRequest("POST", "img/virtual-staging", validatedData);
   }
 
@@ -395,10 +395,31 @@ export class ArariaClient {
   }
 
   /**
+   * Regenerate a fashion model
+   */
+  async regenerateFashionModel(id: string) {
+    return this.makeRequest("POST", `fashion-model/regenerate/${id}`);
+  }
+
+  /**
    * Get all fashion models
    */
   async getFashionModels() {
     return this.makeRequest("GET", "fashion-model");
+  }
+
+  /**
+   * Get a specific fashion model
+   */
+  async getFashionModel(id: string) {
+    return this.makeRequest("GET", `fashion-model/${id}`);
+  }
+
+  /**
+   * Delete a specific fashion model
+   */
+  async deleteFashionModel(id: string) {
+    return this.makeRequest("DELETE", `fashion-model/${id}`);
   }
 
   /**

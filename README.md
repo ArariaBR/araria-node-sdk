@@ -22,7 +22,7 @@ const client = new ArariaClient({
 });
 
 // Generate images with Runware
-const images = await client.generateRunware({
+const images = await client.imgGenerate({
   prompt: "your prompt",
   negative_prompt: "your negative prompt", // Optional
 });
