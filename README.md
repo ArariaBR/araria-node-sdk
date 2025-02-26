@@ -2,6 +2,10 @@
 
 A TypeScript/JavaScript SDK for interacting with the Araria API.
 
+## Development Notice:
+
+This is under heavy development and will be published to npm when production-ready, breaking changes should be expected.
+
 ## Installation
 
 ```bash
@@ -21,7 +25,7 @@ const client = new ArariaClient({
   baseUrl: "https://prod-api.araria.com.br", // Optional, defaults to prod URL
 });
 
-// Generate images with Runware
+// Generate images
 const images = await client.imgGenerate({
   prompt: "your prompt",
   negative_prompt: "your negative prompt", // Optional
@@ -37,13 +41,13 @@ const noBackgroundImage = await client.removeBackground({
   image_url: "your-image-url",
 });
 
-// Generate Decor8 Prime Walls
-const primeWalls = await client.generateDecor8PrimeWalls({
+// Generate  Prime Walls
+const primeWalls = await client.generateDecorPrimeWalls({
   prompt: "your prompt",
 });
 
-// Generate Decor8 Image (Virtual Staging)
-const decor8Image = await client.generateDecor8Image({
+// Generate  Image (Virtual Staging)
+const decorImage = await client.generateDecorImage({
   prompt: "your prompt",
 });
 
@@ -117,11 +121,11 @@ await client.finalizeFashionVideo("video-id");
 - Promise-based API
 - Comprehensive error handling
 - All Araria API endpoints supported:
-  - Image generation with Runware
+  - Image generation
   - Image upscaling
   - Background removal
-  - Decor8 Prime Walls generation
-  - Decor8 Virtual Staging
+  - Prime Walls generation
+  - Virtual Staging
   - Nuvemshop integration
   - File management
   - Vision and LLM capabilities
