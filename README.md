@@ -60,8 +60,6 @@ const connected = await client.nuvemshopConnect({
   arariaApiKey: "your-api-key",
 });
 
-const user = await client.nuvemshopUser(123, "TCS-value");
-
 const chatResponse = await client.nuvemshopChat({
   model: "model-name",
   prompt: "your message",
@@ -130,7 +128,7 @@ await client.finalizeFashionVideo("video-id");
   - File management
   - Vision and LLM capabilities
   - Fashion video generation and management
-  - Model listing
+  - Fashion models generation and management
 
 ## Requirements
 
