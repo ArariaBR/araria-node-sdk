@@ -220,6 +220,13 @@ export class ArariaClient {
   }
 
   /**
+   * Get user
+   */
+  async getUser() {
+    return this.makeRequest("GET", "user");
+  }
+
+  /**
    * Generate image
    */
   async imgGenerate(request: ImageGenerateRequest) {
