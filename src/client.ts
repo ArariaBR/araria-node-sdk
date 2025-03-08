@@ -121,6 +121,7 @@ const VisionImageToTextResponseSchema = z.string();
 const PromptGenerateResponseSchema = z.string();
 
 const FashionTryonRequestSchema = z.object({
+  modelId: z.string(),
   model: z.string(),
   task_type: z.string(),
   input: z.object({
@@ -139,8 +140,20 @@ const FashionModelRequestSchema = z.object({
   bodyType: z.string(),
   ethnicity: z.string(),
   style: z.string(),
+  prompt: z.string().optional(),
 });
 
+const FashionModelPromptRequestSchema = z.object({
+  systemPrompt: z.string().optional(),
+  prompt: z.string(),
+  model: z.string(),
+});
+
+const ImageTaskRequestSchema = z.object({
+  model: z.string(),
+  task_type: z.string(),
+  input: z.unknown(),
+});
 // Types
 export type ImageGenerateRequest = z.infer<typeof ImageGenerateRequestSchema>;
 export type UpscaleRequest = z.infer<typeof UpscaleRequestSchema>;
@@ -174,6 +187,10 @@ export interface ArariaClientConfig {
 
 export type FashionTryonRequest = z.infer<typeof FashionTryonRequestSchema>;
 export type FashionModelRequest = z.infer<typeof FashionModelRequestSchema>;
+export type ImageTaskRequest = z.infer<typeof ImageTaskRequestSchema>;
+export type FashionModelPromptRequest = z.infer<
+  typeof FashionModelPromptRequestSchema
+>;
 export class ArariaClient {
   private client: AxiosInstance;
 
@@ -388,6 +405,20 @@ export class ArariaClient {
   }
 
   /**
+   * Get all fashion tryons
+   */
+  async getFashionTryons() {
+    return this.makeRequest("GET", "fashion-tryon");
+  }
+
+  /**
+   * Get a specific fashion tryon
+   */
+  async getFashionTryon(id: string) {
+    return this.makeRequest("GET", `fashion-tryon/${id}`);
+  }
+
+  /**
    * Create a new fashion model
    */
   async createFashionModel(request: FashionModelRequest) {
@@ -434,5 +465,35 @@ export class ArariaClient {
    */
   async getFile(id: string) {
     return this.makeRequest("GET", `files/${id}`);
+  }
+
+  /**
+   * Get a specific image task
+   */
+  async getImageTask(id: string) {
+    return this.makeRequest("GET", `img/task/${id}`);
+  }
+
+  /**
+   * Create a new image task
+   */
+  async createImageTask(request: ImageTaskRequest) {
+    const validatedData = ImageTaskRequestSchema.parse(request);
+    return this.makeRequest("POST", "img/midjourney", validatedData);
+  }
+
+  /**
+   * Generate a random fashion model prompt
+   */
+  async generateFashionModelPrompt(prompt: FashionModelPromptRequest) {
+    const validatedData = FashionModelPromptRequestSchema.parse(prompt);
+    return this.makeRequest("POST", "fashion-model/prompt", validatedData);
+  }
+
+  /**
+   * Load a random fashion model prompt
+   */
+  async loadRandomFashionModelPrompt() {
+    return this.makeRequest("GET", "fashion-model/prompt/random");
   }
 }
