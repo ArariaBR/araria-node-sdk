@@ -1,6 +1,19 @@
 import axios, { AxiosInstance } from "axios";
 import { z } from "zod";
 
+export enum EPhotoMakerEnum {
+  NoStyle = "No style",
+  Cinematic = "Cinematic",
+  DisneyCharacter = "Disney Character",
+  DigitalArt = "Digital Art",
+  Photographic = "Photographic",
+  FantasyArt = "Fantasy art",
+  Neonpunk = "Neonpunk",
+  Enhance = "Enhance",
+  ComicBook = "Comic book",
+  Lowpoly = "Lowpoly",
+  LineArt = "Line art",
+}
 // Request schemas
 const ImageGenerateRequestSchema = z.object({
   positivePrompt: z.string(),
@@ -27,13 +40,23 @@ const ImageGenerateRequestSchema = z.object({
 });
 
 const UpscaleRequestSchema = z.object({
-  image_url: z.string(),
+  inputImage: z.string(),
+  upscaleFactor: z.number(),
 });
 
 const BackgroundRemovalRequestSchema = z.object({
-  image_url: z.string(),
+  inputImage: z.string(),
 });
 
+const PhotoMakerRequestSchema = z.object({
+  inputImages: z.array(z.string()),
+  style: z.nativeEnum(EPhotoMakerEnum),
+  positivePrompt: z.string(),
+  negativePrompt: z.string().optional(),
+  height: z.number(),
+  width: z.number(),
+  numberResults: z.number(),
+});
 const DecorPrimeWallsRequestSchema = z.object({
   prompt: z.string(),
 });
@@ -160,6 +183,7 @@ export type UpscaleRequest = z.infer<typeof UpscaleRequestSchema>;
 export type BackgroundRemovalRequest = z.infer<
   typeof BackgroundRemovalRequestSchema
 >;
+export type PhotoMakerRequest = z.infer<typeof PhotoMakerRequestSchema>;
 export type DecorPrimeWallsRequest = z.infer<
   typeof DecorPrimeWallsRequestSchema
 >;
@@ -248,6 +272,14 @@ export class ArariaClient {
   async removeBackground(request: BackgroundRemovalRequest) {
     const validatedData = BackgroundRemovalRequestSchema.parse(request);
     return this.makeRequest("POST", "img/bkg-removal", validatedData);
+  }
+
+  /**
+   * Photo maker
+   */
+  async photoMaker(request: PhotoMakerRequest) {
+    const validatedData = PhotoMakerRequestSchema.parse(request);
+    return this.makeRequest("POST", "img/photo-maker", validatedData);
   }
 
   /**
