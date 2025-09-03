@@ -133,7 +133,12 @@ const VisionImageToTextRequestSchema = z.object({
   image: z.string(),
   model: z.string(),
 });
-
+const VisionImageToTextFullRequestSchema = z.object({
+  image: z.string(),
+  model: z.string(),
+  systemPrompt: z.string(),
+  prompt: z.string(),
+});
 const PromptGenerateRequestSchema = z.object({
   systemPrompt: z.string(),
   description: z.string(),
@@ -195,6 +200,9 @@ export type NuvemshopConnectDto = z.infer<typeof NuvemshopConnectDtoSchema>;
 export type NuvemshopUser = z.infer<typeof NuvemshopUserSchema>;
 export type VisionImageToTextRequest = z.infer<
   typeof VisionImageToTextRequestSchema
+>;
+export type VisionImageToTextFullRequest = z.infer<
+  typeof VisionImageToTextFullRequestSchema
 >;
 export type PromptGenerateRequest = z.infer<typeof PromptGenerateRequestSchema>;
 export type VisionImageToTextResponse = z.infer<
@@ -375,6 +383,16 @@ export class ArariaClient {
   ): Promise<VisionImageToTextResponse> {
     const validatedData = VisionImageToTextRequestSchema.parse(request);
     return this.makeRequest("POST", "vision/img-to-text", validatedData);
+  }
+
+  /**
+   * Vision Full
+   */
+  async visionImageToTextFull(
+    request: VisionImageToTextFullRequest
+  ): Promise<VisionImageToTextResponse> {
+    const validatedData = VisionImageToTextRequestSchema.parse(request);
+    return this.makeRequest("POST", "vision/img-to-text-full", validatedData);
   }
 
   /**
