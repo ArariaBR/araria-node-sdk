@@ -391,7 +391,7 @@ export class ArariaClient {
   async visionImageToTextFull(
     request: VisionImageToTextFullRequest
   ): Promise<VisionImageToTextResponse> {
-    const validatedData = VisionImageToTextRequestSchema.parse(request);
+    const validatedData = VisionImageToTextFullRequestSchema.parse(request);
     return this.makeRequest("POST", "vision/img-to-text-full", validatedData);
   }
 
